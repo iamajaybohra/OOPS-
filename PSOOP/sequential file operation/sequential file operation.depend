@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1566722782 source:c:\users\user\desktop\codeblocks\sequential file operation\main.cpp
+	<iostream>
+	<bits/stdc++.h>
+

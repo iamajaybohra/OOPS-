@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1570003601 source:c:\users\user\desktop\desktop\codebundle\codeblocks\fds\05merge_sort\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1570007178 source:c:\users\user\desktop\desktop\codebundle\codeblocks\fds\07merge_sort\main.c
+	<stdio.h>
+	<stdlib.h>
+

@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1570647131 source:c:\users\user\desktop\desktop\codebundle\codeblocks\fds\05binary_search\main.c
+	<stdio.h>
+	<string.h>
+
+1570647348 source:c:\users\user\desktop\merge.cpp
+	<iostream>
+

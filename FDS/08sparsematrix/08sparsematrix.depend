@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1570092437 source:c:\users\user\desktop\desktop\codebundle\codeblocks\fds\08sparsematrix\main.c
+	<stdio.h>
+	<stdlib.h>
+

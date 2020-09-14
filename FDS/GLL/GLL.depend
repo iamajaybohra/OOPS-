@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1571080987 source:c:\users\user\desktop\desktop\codebundle\codeblocks\fds\gll\main.c
+	<stdio.h>
+	<stdlib.h>
+

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1570171505 source:c:\users\user\desktop\desktop\codebundle\codeblocks\psoop\08filehandling\main.cpp
+	<iostream>
+	<string.h>
+	<fstream>
+

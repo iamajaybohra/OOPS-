@@ -1,0 +1,284 @@
+--CODE--
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int **form_matrix(int rows,int cols)
+{
+    int **a = (int**)calloc(rows,sizeof(int*));
+    for(int i=0;i<rows;i++)
+        a[i] = (int*)calloc(cols,sizeof(int));
+    return a;
+}
+void print_matrix(int **a,int row,int col)
+{
+
+    for(int i=0;i<row;i++)
+    {
+        for(int j=0;j<col;j++)
+            printf("%d\t",a[i][j]);
+        printf("\n");
+    }
+}
+int get_matrix(int **a,int row,int col)
+{
+    printf("\t\tEnter The Elements\n");
+    int count=0;
+    for(int i=0;i<row;i++)
+    {
+        for(int j=0;j<col;j++){
+            scanf("%d",&a[i][j]);
+            if(a[i][j]!=0)
+                count++;
+        }
+    }
+    printf("------------- The Entered Matrix Is --------------\n");
+    print_matrix(a,row,col);
+    return count;
+}
+void sparse(int **a,int rows,int cols,int **b,int count)
+{
+    b[0][0] = rows;
+    b[0][1] = cols;
+    b[0][2] = count;
+    int k=1;
+    for(int i=0;i<rows;i++)
+    {
+        for(int j=0;j<cols;j++)
+        {
+            if(a[i][j]!=0)
+            {
+                b[k][0] = i;
+                b[k][1] = j;
+                b[k][2] = a[i][j];
+                k++;
+            }
+        }
+    }
+    printf("The Sparse Matrix is:\n");
+    print_matrix(b,count+1,3);
+    printf("\n");
+}
+void fast_transpose(int **a,int rows,int cols)
+{
+    int **b = form_matrix(rows,3);
+    int x;
+    b[0][0] = a[0][1];
+    b[0][1] = a[0][0];
+    b[0][2] = a[0][2];
+    int *s = (int*)calloc(cols,sizeof(int));
+    for(int i=1;i<rows;i++)
+        s[a[i][1]]++;
+    int *t = (int*)calloc(cols,sizeof(int));
+    t[0] = 1;
+    for(int i=1;i<=cols;i++)
+        t[i] = t[i-1] + s[i-1];
+    for(int i=1;i<rows;i++)
+    {
+        x = a[i][1];
+        b[t[x]][0]= a[i][1];
+        b[t[x]][1]= a[i][0];
+        b[t[x]][2]= a[i][2];
+        t[x]++;
+    }
+    printf("\nFor Fast transpose,total number of loops:%d",rows+cols);
+    printf("\n\nAfter fast Transpose\n");
+    print_matrix(b,rows,3);
+
+}
+void simple_transpose(int **a,int rows,int cols)
+{
+    int **b = form_matrix(rows,3);
+    int k = 1;
+    b[0][0] = a[0][1];
+    b[0][1] = a[0][0];
+    b[0][2] = a[0][2];
+    for(int i=0;i<cols;i++)
+    {
+        for(int j=1;j<rows;j++)
+        {
+            if(a[j][1] == i)
+            {
+                b[k][2] = a[j][2];
+                b[k][0] = a[j][1];
+                b[k][1] = a[j][0];
+                k++;
+            }
+        }
+    }
+    printf("\nFor simple transpose,total number of loops:%d",rows*cols);
+    printf("\n\nAfter Simple transpose: \n");
+    print_matrix(b,rows,3);
+}
+void add(int **a,int **b,int row1,int row2)
+{
+
+    if(a[0][0] == b[0][0] && a[0][1] == b[0][1])
+    {
+        int flag;
+        int **c = form_matrix(a[0][0],a[0][1]);
+        for(int i=1;i<row1;i++)
+        {
+
+            flag = 0;
+            for(int j=1;j<row2;j++)
+            {
+
+                if(a[i][0] == b[j][0] && a[i][1] == b[j][1])
+                {
+                    c[a[i][0]][a[i][1]] = a[i][2] + b[j][2];
+                    flag = 1;
+                }
+            }
+            if(flag == 0)
+                  c[a[i][0]][a[i][1]] = a[i][2];
+        }
+
+        for(int i=1;i<row2;i++)
+        {
+
+            if(c[b[i][0]][b[i][1]] == 0)
+               c[b[i][0]][b[i][1]] = b[i][2];
+        }
+         printf("\nAddition of two sparse matrix:\n");
+        print_matrix(c,a[0][0],a[0][1]);
+    }
+    else
+        printf("The Matrix Can't Be Added\n");
+}
+int main()
+{
+    int **a,**b,**c,**d;
+    int rows,cols,row1,col1;
+    printf("\nEnter The Rows And Columns for First Matrix!\n");
+    scanf("%d %d",&rows,&cols);
+    a = form_matrix(rows,cols);
+    int l1 = get_matrix(a,rows,cols);
+    b = form_matrix(l1+1,3);
+    sparse(a,rows,cols,b,l1);
+    int choice;
+    do
+    {
+        printf("_______________Sparse Matrix Operation_______________\n");
+        printf("\nSelect any one of the following\n\n1.Simple Transpose\n2.Fast Transpose\n3.Addition\n4.Exit\n\nEnter your option");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1 :simple_transpose(b,l1+1,3);
+                    break;
+
+            case 2 :fast_transpose(b,l1+1,3);
+                    break;
+
+            case 3 :printf("Enter The Rows and Columns for Second Matrix\n");
+                    scanf("%d %d",&row1,&col1);
+                    c = form_matrix(row1,col1);
+                    int l2 = get_matrix(c,row1,col1);
+                    d = form_matrix(l2+1,3);
+                    sparse(c,row1,col1,d,l2);
+                    add(b,d,l1+1,l2+1);
+                    break;
+
+            case 4 :printf("\n\nThank you....");
+                    break;
+
+           default :printf("\n\nWrong choice....");
+                    break;
+        }
+    }while(choice!=4);
+}
+
+
+--OUTPUT--
+
+
+Enter The Rows And Columns for First Matrix!
+2
+2
+                Enter The Elements
+1
+0
+0
+0
+------------- The Entered Matrix Is --------------
+1       0
+0       0
+The Sparse Matrix is:
+2       2       1
+0       0       1
+
+_______________Sparse Matrix Operation_______________
+
+Select any one of the following
+
+1.Simple Transpose
+2.Fast Transpose
+3.Addition
+4.Exit
+
+Enter your option1
+
+For simple transpose,total number of loops:6
+
+After Simple transpose:
+2       2       1
+0       0       1
+_______________Sparse Matrix Operation_______________
+
+Select any one of the following
+
+1.Simple Transpose
+2.Fast Transpose
+3.Addition
+4.Exit
+
+Enter your option2
+
+For Fast transpose,total number of loops:5
+
+After fast Transpose
+2       2       1
+0       0       1
+_______________Sparse Matrix Operation_______________
+
+Select any one of the following
+
+1.Simple Transpose
+2.Fast Transpose
+3.Addition
+4.Exit
+
+Enter your option3
+Enter The Rows and Columns for Second Matrix
+2
+2
+                Enter The Elements
+1
+0
+3
+0
+------------- The Entered Matrix Is --------------
+1       0
+3       0
+The Sparse Matrix is:
+2       2       2
+0       0       1
+1       0       3
+
+
+Addition of two sparse matrix:
+2       0
+3       0
+_______________Sparse Matrix Operation_______________
+
+Select any one of the following
+
+1.Simple Transpose
+2.Fast Transpose
+3.Addition
+4.Exit
+
+Enter your option4
+
+
+Thank you....

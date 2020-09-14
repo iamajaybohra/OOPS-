@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1566563482 source:c:\users\user\desktop\codeblocks\matrix_operation\main.cpp
+	<stdio.h>
+	<stdlib.h>
+
+1566563661 source:c:\users\user\desktop\desktop\codeblocks\fds\matrix_operation\main.cpp
+	<stdio.h>
+	<stdlib.h>
+

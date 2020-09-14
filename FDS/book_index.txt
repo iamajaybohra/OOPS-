@@ -1,0 +1,106 @@
+--CODE--
+
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+    int data;
+    struct book *down;
+    struct book *next;
+
+}node;
+
+node *create(int value)
+{
+    node *temp = (node*)malloc(sizeof(node));
+    temp->down = NULL;
+    temp->next = NULL;
+    temp->data = value;
+    return temp;
+}
+node *create_book()
+{
+    node *head;
+    int x;
+    printf("\nGLL IMPLEMENTATION\n");
+    printf("\n\nPlease Enter The data or 0 To stop: ");
+    scanf("%d",&x);
+    if(x!=0)
+    {
+        head = create(x);
+        printf("For Forward of %d",x);
+        head->next = create_book();
+        printf("For Down of %d",x);
+        head->down = create_book();
+        return head;
+    }
+    else
+        return NULL;
+}
+void print(node *head)
+{
+    if(head==NULL)
+        return;
+    else
+    {
+        printf("%d\t",head->data);
+        print(head->down);
+        print(head->next);
+    }
+}
+int main()
+{
+    node *head = NULL;
+    head = create_book();
+    print(head);
+}
+
+--OUTPUT--
+ss
+GLL IMPLEMENTATION
+
+
+Please Enter The data or 0 To stop: 1
+For Forward of 1
+
+Please Enter The data or 0 To stop: 2
+For Forward of 2
+
+Please Enter The data or 0 To stop: 3
+For Forward of 3
+
+Please Enter The data or 0 To stop: 0
+For Down of 3
+
+Please Enter The data or 0 To stop: 4
+For Forward of 4
+
+Please Enter The data or 0 To stop: 0
+For Down of 4
+
+Please Enter The data or 0 To stop: 0
+For Down of 2
+
+Please Enter The data or 0 To stop: 5
+For Forward of 5
+
+Please Enter The data or 0 To stop: 0
+For Down of 5
+
+Please Enter The data or 0 To stop: 0
+For Down of 1
+
+Please Enter The data or 0 To stop: 4
+For Forward of 4
+
+Please Enter The data or 0 To stop: 6
+For Forward of 6
+
+Please Enter The data or 0 To stop: 0
+For Down of 6
+
+Please Enter The data or 0 To stop: 0
+For Down of 4
+
+Please Enter The data or 0 To stop: 0
+1       4       6       2       5       3       4
